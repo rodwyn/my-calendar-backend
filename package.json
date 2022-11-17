@@ -1,0 +1,24 @@
+{
+  "name": "my-calendar-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rodwyn/my-calendar-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rodwyn/my-calendar-backend/issues"
+  },
+  "homepage": "https://github.com/rodwyn/my-calendar-backend#readme",
+  "dependencies": {
+
+  }
+}
