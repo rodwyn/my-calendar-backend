@@ -8,11 +8,9 @@ const app = express();
 app.use( express.static('public'));
 
 // rutas
-// app.get('/', (request, response) => {
-//   response.json({
-//     ok: true
-//   });
-// })
+app.use('/api/auth', require('./routes/auth'));
+//TODO: auth // crear,login, renew
+
 
 // escuchar peticiones
 app.listen(process.env.PORT, () => {
