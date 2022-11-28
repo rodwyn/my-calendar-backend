@@ -28,7 +28,7 @@ const createUser = async(req, res = response) => {
       name: user.name
     });  
   } catch (error) {
-   console.log(error); 
+   console.log(error);
    res.status(500).json({
     ok: false,
     msg: 'Error saving, contact administrator.'
@@ -36,16 +36,46 @@ const createUser = async(req, res = response) => {
   }
 };
 
-const loginUser = (req, res = response) => {
-  const { name, email, password } = req.body;
+const loginUser = async(req, res = response) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    
+    if (!user) {
+      return res.status(400).json({
+        ok: false,
+        msg: `E-mail and password are not correct.`
+      });
+    }
+
+    // validate passwords
+    const isValidPassword = bcrypt.compareSync(password, user.password);
+
+    if (!isValidPassword) {
+      return res.status(400).json({
+        ok: false,
+        msg: 'Wrong password.'
+      });
+    }
+
+    //todo generate JWT
+
+    res.status(201).json({
+      ok: true,
+      uid: user.id,
+      name: user.name
+    });  
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: 'Error saving, contact administrator.'
+    });
+  }
   
-  res.status(201).json({
-    ok: true,
-    msg: 'login',
-    name,
-    email,
-    password
-  });
+  
 };
 
 const renewToken = (req, res = response) => {
