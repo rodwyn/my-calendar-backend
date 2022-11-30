@@ -8,6 +8,7 @@ const getEvents = ( req, res = response ) => {
 };
 
 const createEvent = ( req, res = response ) => {
+  
   res.status(201).json({
     ok: true,
     msg: 'createEvent'
