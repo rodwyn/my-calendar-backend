@@ -37,14 +37,14 @@ const updateEvent = async( req, res = response ) => {
     const event = await Event.findById(eventId);
 
     if (!event) {
-      res.status(404).json({
+      return res.status(404).json({
         ok: false,
         msg: "Event does not exist."
       });
     }
 
     if (event.user.toString() !== req.uid) {
-      res.status(401).json({
+      return res.status(401).json({
         ok: false,
         msg: "User does not have privileges to update this event."
       });
@@ -52,7 +52,7 @@ const updateEvent = async( req, res = response ) => {
 
     const newEvent = {
       ...req.body,
-      user: uid
+      user: req.uid
     };
 
     const updatedEvent = await Event.findByIdAndUpdate(eventId, newEvent, { new: true } )
@@ -69,11 +69,40 @@ const updateEvent = async( req, res = response ) => {
   }
 };
 
-const deleteEvent = ( req, res = response ) => {
-  res.status(201).json({
-    ok: true,
-    msg: 'deleteEvent'
-  });  
+const deleteEvent = async( req, res = response ) => {
+  const eventId = req.params.id;
+
+  try {
+    const event = await Event.findById(eventId);
+
+    if (!event) {
+      return res.status(404).json({
+        ok: false,
+        msg: "Event does not exist."
+      });
+    }
+
+    if (event.user.toString() !== req.uid) {
+      return res.status(401).json({
+        ok: false,
+        msg: "User does not have privileges to update this event."
+      });
+    }
+
+    const deletedEvent = await Event.findByIdAndDelete(eventId);
+    res.status(201).json({
+      ok: true,
+      event: deletedEvent
+    });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Error updating event."
+    });
+  }
+
 };
 
 module.exports = { createEvent, deleteEvent, getEvents, updateEvent };
