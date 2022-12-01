@@ -85,7 +85,7 @@ const deleteEvent = async( req, res = response ) => {
     if (event.user.toString() !== req.uid) {
       return res.status(401).json({
         ok: false,
-        msg: "User does not have privileges to update this event."
+        msg: "User does not have privileges to delete this event."
       });
     }
 
